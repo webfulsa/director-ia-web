@@ -1,0 +1,755 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+</head>
+<body>
+<title>Diagnóstico digital — Caso real de un estudio contable</title>
+<style>
+  :root {
+    --ground: #EBEEF2;
+    --surface: #FFFFFF;
+    --surface-2: #E3E8EE;
+    --ink: #0E1B2A;
+    --ink-2: #33475C;
+    --muted: #667B90;
+    --line: #D3DAE3;
+    --line-2: #B9C3CF;
+    --primary: #17436E;
+    --primary-soft: #DCE7F2;
+    --alert: #A32017;
+    --alert-soft: #F6DEDC;
+    --warn: #8A5308;
+    --warn-soft: #F7E8D0;
+    --do: #0D5B4C;
+    --do-soft: #D5E9E3;
+    --shadow: 0 1px 2px rgba(14,27,42,.05), 0 10px 26px -20px rgba(14,27,42,.5);
+
+    --display: "Bahnschrift", "DIN Alternate", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --mono: ui-monospace, "SF Mono", "Cascadia Mono", Consolas, monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground: #0C1219;
+      --surface: #141C25;
+      --surface-2: #1D2732;
+      --ink: #E7ECF1;
+      --ink-2: #BCC8D4;
+      --muted: #8598AB;
+      --line: #263240;
+      --line-2: #37485A;
+      --primary: #7FB0E0;
+      --primary-soft: #16283C;
+      --alert: #E8746A;
+      --alert-soft: #331917;
+      --warn: #D69B45;
+      --warn-soft: #2E2314;
+      --do: #63BFAA;
+      --do-soft: #122E29;
+      --shadow: 0 1px 2px rgba(0,0,0,.5), 0 12px 30px -22px rgba(0,0,0,1);
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground: #0C1219;
+    --surface: #141C25;
+    --surface-2: #1D2732;
+    --ink: #E7ECF1;
+    --ink-2: #BCC8D4;
+    --muted: #8598AB;
+    --line: #263240;
+    --line-2: #37485A;
+    --primary: #7FB0E0;
+    --primary-soft: #16283C;
+    --alert: #E8746A;
+    --alert-soft: #331917;
+    --warn: #D69B45;
+    --warn-soft: #2E2314;
+    --do: #63BFAA;
+    --do-soft: #122E29;
+    --shadow: 0 1px 2px rgba(0,0,0,.5), 0 12px 30px -22px rgba(0,0,0,1);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 17px;
+    line-height: 1.62;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  .page { max-width: 720px; margin: 0 auto; padding: 0 18px 72px; }
+
+  p { margin: 0 0 14px; }
+  p:last-child { margin-bottom: 0; }
+  b, strong { font-weight: 650; }
+
+  /* ---------- portada ---------- */
+  .cover {
+    padding: 40px 0 30px;
+    border-bottom: 3px solid var(--ink);
+    margin-bottom: 30px;
+  }
+  .kicker {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--primary);
+    margin: 0 0 16px;
+  }
+  h1 {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 38px;
+    line-height: 1.06;
+    letter-spacing: -.015em;
+    margin: 0 0 14px;
+    text-wrap: balance;
+  }
+  .for {
+    font-size: 16px;
+    color: var(--ink-2);
+    margin: 0;
+  }
+  .for b { display: block; font-size: 18px; color: var(--ink); }
+  .stamp {
+    display: flex; flex-wrap: wrap; gap: 6px 18px;
+    font-family: var(--mono); font-size: 12px; color: var(--muted);
+    margin-top: 22px;
+  }
+
+  /* ---------- bloques base ---------- */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    box-shadow: var(--shadow);
+    padding: 20px 18px;
+  }
+  .lead-box { border-left: 4px solid var(--primary); }
+  .lead-box .big {
+    font-family: var(--display);
+    font-size: 21px;
+    line-height: 1.34;
+    font-weight: 600;
+    margin: 0 0 14px;
+    text-wrap: balance;
+  }
+
+  h2 {
+    font-family: var(--display);
+    font-size: 27px;
+    line-height: 1.14;
+    font-weight: 700;
+    letter-spacing: -.01em;
+    margin: 0 0 8px;
+    text-wrap: balance;
+  }
+  section { margin-top: 46px; scroll-margin-top: 16px; }
+  .sec-top { border-top: 1px solid var(--line-2); padding-top: 20px; margin-bottom: 20px; }
+  .sec-top .tag {
+    font-family: var(--mono); font-size: 11px; letter-spacing: .14em;
+    text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 10px;
+  }
+  .sec-top p { color: var(--ink-2); margin: 0; }
+
+  /* ---------- resumen numérico ---------- */
+  .tally { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 22px 0 0; }
+  .tally div {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 4px;
+    padding: 14px 14px 15px;
+  }
+  .tally .n {
+    font-family: var(--display); font-size: 40px; line-height: 1;
+    font-variant-numeric: tabular-nums; display: block; margin-bottom: 6px;
+  }
+  .tally .l { font-size: 13px; color: var(--muted); line-height: 1.35; display: block; }
+  .n-alert { color: var(--alert); }
+  .n-warn { color: var(--warn); }
+
+  /* ---------- índice ---------- */
+  nav.toc { margin: 26px 0 0; }
+  nav.toc ol { list-style: none; margin: 0; padding: 0; counter-reset: t; }
+  nav.toc li { counter-increment: t; border-bottom: 1px solid var(--line); }
+  nav.toc a {
+    display: flex; align-items: baseline; gap: 12px;
+    padding: 13px 2px; text-decoration: none; color: var(--ink); font-size: 16px;
+  }
+  nav.toc a::before {
+    content: counter(t); font-family: var(--mono); font-size: 12px; color: var(--primary);
+    min-width: 18px;
+  }
+  nav.toc a:hover { color: var(--primary); }
+
+  /* ---------- hallazgos ---------- */
+  .issue {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    box-shadow: var(--shadow);
+    margin-bottom: 14px;
+    overflow: hidden;
+  }
+  .issue > header { padding: 16px 16px 0; }
+  .flags { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 10px; }
+  .ref { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .sev {
+    font-family: var(--mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase;
+    font-weight: 700; padding: 4px 9px; border-radius: 99px;
+  }
+  .s-alert { background: var(--alert-soft); color: var(--alert); }
+  .s-warn { background: var(--warn-soft); color: var(--warn); }
+  .issue h3 {
+    font-family: var(--display); font-size: 20px; line-height: 1.22; font-weight: 700;
+    margin: 0; letter-spacing: -.005em; text-wrap: balance;
+  }
+  .issue .desc { padding: 12px 16px 16px; }
+  .cost {
+    background: var(--surface-2);
+    border-top: 1px solid var(--line);
+    padding: 13px 16px;
+    font-size: 15.5px;
+    line-height: 1.5;
+  }
+  .cost b {
+    font-family: var(--mono); font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--alert); display: block; margin-bottom: 3px;
+  }
+  details { border-top: 1px solid var(--line); }
+  summary {
+    padding: 12px 16px; cursor: pointer; font-size: 13.5px; color: var(--primary);
+    font-family: var(--mono); letter-spacing: .04em; list-style: none;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: " +"; font-weight: 700; }
+  details[open] summary::after { content: " −"; }
+  details .ev {
+    font-family: var(--mono); font-size: 12.5px; line-height: 1.62; color: var(--ink-2);
+    background: var(--surface-2); margin: 0; padding: 14px 16px;
+    overflow-x: auto; white-space: pre-wrap; word-break: break-word;
+  }
+
+  /* ---------- redes ---------- */
+  .net { display: grid; gap: 12px; }
+  .net article {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 4px;
+    padding: 16px; box-shadow: var(--shadow);
+  }
+  .net h3 { font-family: var(--display); font-size: 18px; margin: 0 0 4px; font-weight: 700; }
+  .net .figs {
+    display: flex; flex-wrap: wrap; gap: 6px 16px; margin: 0 0 10px;
+    font-family: var(--mono); font-size: 12.5px; color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .net .figs b { color: var(--ink); font-weight: 600; }
+  .net p { font-size: 15.5px; margin: 0; }
+  .bad { color: var(--alert); font-weight: 650; }
+
+  /* ---------- plan ---------- */
+  .fase {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 4px;
+    border-top: 4px solid var(--do); box-shadow: var(--shadow);
+    padding: 18px 16px; margin-bottom: 14px;
+  }
+  .fase .when {
+    font-family: var(--mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--do); font-weight: 700; display: block; margin-bottom: 7px;
+  }
+  .fase h3 { font-family: var(--display); font-size: 21px; line-height: 1.2; margin: 0 0 10px; font-weight: 700; }
+  .fase ul { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 9px; }
+  .fase li { padding-left: 26px; position: relative; font-size: 15.5px; line-height: 1.5; }
+  .fase li::before {
+    content: "✓"; position: absolute; left: 0; top: 0;
+    color: var(--do); font-weight: 700; font-size: 14px;
+  }
+  .deliver {
+    margin-top: 14px; padding-top: 12px; border-top: 1px dashed var(--line-2);
+    font-size: 14.5px; color: var(--ink-2);
+  }
+  .deliver b {
+    font-family: var(--mono); font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--do); display: block; margin-bottom: 3px;
+  }
+
+  /* ---------- cierre ---------- */
+  .close {
+    background: var(--ink); color: var(--ground);
+    border-radius: 4px; padding: 26px 20px; margin-top: 40px;
+  }
+  :root[data-theme="dark"] .close,
+  :root:not([data-theme="light"]) .close { border: 1px solid var(--line-2); }
+  .close h2 { color: var(--ground); margin-bottom: 12px; }
+  .close p { color: #C3CEDA; font-size: 16px; }
+  .sign { margin-top: 24px; padding-top: 18px; border-top: 1px solid rgba(255,255,255,.18); }
+  .sign .name { font-family: var(--display); font-size: 20px; color: #FFFFFF; font-weight: 700; }
+  .sign .role { font-family: var(--mono); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: #8FB4D8; margin-top: 3px; }
+  .sign .contact { font-size: 15px; color: #C3CEDA; margin-top: 14px; display: grid; gap: 9px; }
+  .sign .contact a {
+    color: #FFFFFF; text-decoration: none; display: inline-flex; align-items: center; gap: 9px;
+    padding: 2px 0; font-weight: 600;
+  }
+  .sign .contact a:hover { text-decoration: underline; }
+  .sign .contact a:focus-visible { outline: 2px solid #8FB4D8; outline-offset: 3px; }
+  .sign .contact .lbl {
+    font-family: var(--mono); font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase;
+    color: #8FB4D8; min-width: 74px; font-weight: 400;
+  }
+
+  .foot { font-size: 13.5px; color: var(--muted); margin-top: 30px; line-height: 1.55; }
+
+  a { color: var(--primary); text-underline-offset: 3px; }
+  a:focus-visible, summary:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+
+  @media (min-width: 700px) {
+    body { font-size: 18px; }
+    .page { padding: 0 32px 96px; }
+    h1 { font-size: 54px; }
+    h2 { font-size: 33px; }
+    .tally { grid-template-columns: repeat(4, 1fr); }
+    .issue > header { padding: 20px 22px 0; }
+    .issue .desc { padding: 14px 22px 20px; }
+    .cost, details .ev, summary { padding-left: 22px; padding-right: 22px; }
+    .card, .fase, .net article { padding: 24px; }
+    .close { padding: 34px 30px; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+
+  /* ---------- versión impresa / PDF ---------- */
+  @page { size: A4; margin: 14mm 12mm 16mm; }
+  @media print {
+    :root {
+      --ground: #FFFFFF; --surface: #FFFFFF; --surface-2: #F1F4F7;
+      --ink: #0E1B2A; --ink-2: #33475C; --muted: #5B7089;
+      --line: #CBD4DE; --line-2: #A9B6C4;
+      --primary: #17436E; --primary-soft: #DCE7F2;
+      --alert: #92180F; --alert-soft: #F6DEDC;
+      --warn: #7A4907; --warn-soft: #F7E8D0;
+      --do: #0B5245; --do-soft: #D5E9E3;
+      --shadow: none;
+    }
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+    body { background: #FFFFFF; font-size: 10.4pt; line-height: 1.5; }
+    .page { max-width: none; padding: 0; }
+
+    /* el contenido plegado se despliega en papel */
+    details > *:not(summary) { display: block !important; content-visibility: visible !important; }
+    summary { color: var(--muted); padding-bottom: 4px; }
+    summary::after, details[open] summary::after { content: ""; }
+
+    h1 { font-size: 27pt; }
+    h2 { font-size: 17pt; }
+    .issue h3, .fase h3 { font-size: 12.6pt; }
+    .cover { padding-top: 0; }
+    .lead-box .big { font-size: 13pt; }
+    .tally { grid-template-columns: repeat(4, 1fr); }
+    .tally .n { font-size: 26pt; }
+
+    /* nada se parte por la mitad */
+    .issue, .fase, .net article, .card, .tally, .close, nav.toc { break-inside: avoid; page-break-inside: avoid; }
+    section { break-before: auto; }
+    #graves, #google, #legal, #redes, #plan { break-before: page; page-break-before: always; }
+    h2, h3 { break-after: avoid; page-break-after: avoid; }
+    .issue > header { break-after: avoid; }
+
+    a { color: var(--primary); text-decoration: none; }
+    .close { background: #0E1B2A !important; color: #E7ECF1 !important; }
+    .close h2 { color: #FFFFFF !important; }
+    .close p { color: #C7D3DF !important; }
+    .sign .contact a { color: #FFFFFF !important; }
+    .foot { font-size: 8.6pt; }
+  }
+</style>
+
+<div class="page">
+
+  <header class="cover">
+    <p class="kicker">Diagnóstico digital · Agosto 2026</p>
+    <h1>Qué frena a un estudio contable en internet</h1>
+    <p class="for">Caso real · cliente anonimizado<b>Estudio contable y jurídico</b>20 profesionales · 14 años en el mercado · Chiclayo, Lambayeque</p>
+    <div class="stamp">
+      <span>Diagnóstico de agosto 2026</span>
+      <span>sitio web + redes sociales</span>
+    </div>
+  </header>
+
+  <div class="card lead-box">
+    <p class="big">Su web funciona. El problema es que hoy no le trae clientes, y hay razones concretas y medibles para eso.</p>
+    <p>Revisamos su sitio pieza por pieza, sus tres redes sociales y su presencia en Google. Encontramos <strong>18 deficiencias</strong>, nueve de ellas graves. La mayoría no son opinables: son cosas que están rotas o que faltan, y se pueden verificar en dos minutos.</p>
+    <p>Este documento le muestra qué encontramos, qué le está costando cada cosa, y qué proponemos hacer al respecto.</p>
+  </div>
+
+  <div class="tally">
+    <div><span class="n n-alert">9</span><span class="l">Fallas graves</span></div>
+    <div><span class="n n-warn">9</span><span class="l">Fallas importantes</span></div>
+    <div><span class="n">3</span><span class="l">Enlaces rotos en su portada</span></div>
+    <div><span class="n">0</span><span class="l">Herramientas de medición instaladas</span></div>
+  </div>
+
+  <nav class="toc">
+    <ol>
+      <li><a href="#graves">Lo que está roto ahora mismo</a></li>
+      <li><a href="#google">Por qué Google no los muestra</a></li>
+      <li><a href="#legal">Riesgo legal y de imagen</a></li>
+      <li><a href="#redes">Sus redes sociales</a></li>
+      <li><a href="#plan">Qué vamos a hacer</a></li>
+    </ol>
+  </nav>
+
+  <!-- ============================================ -->
+  <section id="graves">
+    <div class="sec-top">
+      <span class="tag">Parte 1</span>
+      <h2>Lo que está roto ahora mismo</h2>
+      <p>Fallas que hacen perder clientes que ya lo habían encontrado. Son las que se atienden primero.</p>
+    </div>
+
+    <article class="issue">
+      <header>
+        <div class="flags"><span class="ref">D1</span><span class="sev s-alert">Grave</span></div>
+        <h3>Su web no está preparada para celulares</h3>
+      </header>
+      <div class="desc">
+        <p>Al sitio le falta una instrucción básica que le dice al celular cómo mostrar la página. Sin ella, el teléfono la muestra como si fuera una pantalla de computadora y la achica: el visitante ve letra diminuta y tiene que ampliar con los dedos para leer.</p>
+        <p>Lo llamativo es que su web <em>sí</em> tiene el diseño para celular preparado por dentro. Simplemente nunca se activa, por una línea de código que falta.</p>
+      </div>
+      <div class="cost"><b>Qué le cuesta</b>Más del 70 % de quienes buscan un contador en Chiclayo lo hacen desde el celular. Además, Google evalúa los sitios usando primero la versión móvil: esta sola falla explica buena parte de por qué no aparecen en las búsquedas.</div>
+      <details><summary>Ver el detalle técnico</summary><div class="ev">Etiqueta &lt;meta name="viewport"&gt; → NO EXISTE en ninguna página
+Sí está cargado el archivo responsive.css, pero nunca se aplica</div></details>
+    </article>
+
+    <article class="issue">
+      <header>
+        <div class="flags"><span class="ref">D2</span><span class="sev s-alert">Grave</span></div>
+        <h3>El botón de teléfono marca un número equivocado</h3>
+      </header>
+      <div class="desc">
+        <p>En el pie de su web aparecen sus dos teléfonos correctos. Pero al tocarlos desde un celular, el teléfono no marca sus números: marca los números de ejemplo que traía la plantilla con la que se armó el sitio, y que nunca se reemplazaron.</p>
+      </div>
+      <div class="cost"><b>Qué le cuesta</b>Un cliente que ya los encontró, ya leyó sus servicios y decidió llamar, marca a un número inexistente y se va con otro estudio. Es la pérdida más cara y la más fácil de corregir.</div>
+      <details><summary>Ver el detalle técnico</summary><div class="ev">Enlace real:  tel:+01 (2) 376 3457XX   → muestra (0XX) XXXXXX
+Enlace real:  tel:+149 75 23 222 XX    → muestra 9YY YYY YYY
+El correo de la cabecera tampoco abre nada (enlace vacío)</div></details>
+    </article>
+
+    <article class="issue">
+      <header>
+        <div class="flags"><span class="ref">D3</span><span class="sev s-alert">Grave</span></div>
+        <h3>Su blog completo está caído</h3>
+      </header>
+      <div class="desc">
+        <p>La portada muestra una sección de «Últimas Noticias» con tres artículos. Los tres enlaces, y el blog entero, devuelven un error de servidor. Quien haga clic ve una pantalla de error.</p>
+        <p>El sistema del blog sigue vivo por detrás; lo que está roto es la parte visible. Los últimos artículos publicados son de <strong>marzo de 2023</strong>.</p>
+      </div>
+      <div class="cost"><b>Qué le cuesta</b>Tres enlaces rotos en la página más visitada del sitio, y todo el contenido que Google ya tenía indexado devolviendo error. Frente a un visitante, un error de servidor en la portada dice «aquí no hay nadie a cargo».</div>
+      <details><summary>Ver el detalle técnico</summary><div class="ev">/blog/ y los 3 artículos enlazados → error 500
+/blog/wp-login.php y /blog/feed/ → responden bien
+Diagnóstico: conflicto de plantilla o complemento tras una actualización</div></details>
+    </article>
+
+    <article class="issue">
+      <header>
+        <div class="flags"><span class="ref">D4</span><span class="sev s-alert">Grave</span></div>
+        <h3>La página de Asesoría Contable describe otro servicio</h3>
+      </header>
+      <div class="desc">
+        <p>Su servicio principal, el que da nombre al estudio, tiene una página que habla de comercio exterior y constitución de sociedades: fusiones, escisiones, marcas y patentes, importación y exportación. No dice nada de contabilidad.</p>
+        <p>Es un error de armado del sitio: se copió el texto de otro servicio. La página de Asesoría Tributaria, en cambio, está bien detallada.</p>
+      </div>
+      <div class="cost"><b>Qué le cuesta</b>El visitante que llega buscando contabilidad no encuentra qué incluye el servicio ni por qué elegirlos, y Google tampoco entiende de qué trata esa página.</div>
+    </article>
+
+    <article class="issue">
+      <header>
+        <div class="flags"><span class="ref">D5</span><span class="sev s-alert">Grave</span></div>
+        <h3>No hay WhatsApp en ninguna parte de la web</h3>
+      </header>
+      <div class="desc">
+        <p>Revisamos todo el código del sitio: no existe ni un enlace a WhatsApp. Las únicas formas de contactarlos son llamar por teléfono o llenar un formulario con un código anti-spam que hay que copiar de una imagen, y esperar respuesta por correo.</p>
+      </div>
+      <div class="cost"><b>Qué le cuesta</b>En Perú, la conversación comercial ocurre por WhatsApp. Pedirle a alguien que llene un formulario y espere un correo, cuando la competencia tiene un botón verde a un toque, hace perder a buena parte de los interesados justo en el momento en que estaban decididos.</div>
+    </article>
+
+    <article class="issue">
+      <header>
+        <div class="flags"><span class="ref">D6</span><span class="sev s-warn">Importante</span></div>
+        <h3>La web tarda en cargar y no se ve como fue diseñada</h3>
+      </header>
+      <div class="desc">
+        <p>La portada pesa <strong>7,2 MB</strong> y hace 79 pedidos al servidor: fotos enormes servidas en tamaño pequeño, 27 archivos de programación sueltos y un solo archivo de íconos de 848 KB. En un celular con datos móviles, eso son varios segundos mirando una pantalla en blanco.</p>
+        <p>Además, las tipografías del diseño nunca cargan: el navegador las bloquea por un error de configuración, así que su web se ve con la letra por defecto del teléfono, no con la que se diseñó. La pestaña del navegador tampoco muestra su logo.</p>
+      </div>
+      <div class="cost"><b>Qué le cuesta</b>Cada segundo de espera hace abandonar visitantes, y la velocidad es uno de los criterios con los que Google ordena los resultados.</div>
+      <details><summary>Ver el detalle técnico</summary><div class="ev">Peso total: 7.227 KB en 79 peticiones
+  Imágenes 3.645 KB (fotos de 900×600 mostradas a 360×240)
+  Scripts  1.939 KB en 27 archivos · icomoon.woff 848 KB
+Tipografías bloqueadas por contenido mixto (http:// dentro de https://)
+favicon.ico → 404 · el logo de la cabecera enlaza a una página inexistente</div></details>
+    </article>
+
+    <article class="issue">
+      <header>
+        <div class="flags"><span class="ref">D7</span><span class="sev s-warn">Importante</span></div>
+        <h3>Detalles visibles que restan credibilidad</h3>
+      </header>
+      <div class="desc">
+        <p>Cosas que ve cualquier visitante y que, en un estudio que vende precisión y orden, pesan más que en otro rubro:</p>
+        <ul style="margin:12px 0 0;padding-left:20px;display:grid;gap:8px;font-size:15.5px">
+          <li>El titular de la página de contacto dice <strong>«CONCTÁCTANOS»</strong>, y más abajo <strong>«INFORMACIÓN DE CONTCTO»</strong> y <strong>«Contaco»</strong>.</li>
+          <li>En la portada, el bloque «Excelencia» empieza con <strong>«ervicio de calidad…»</strong>: falta la letra inicial.</li>
+          <li>En «Nosotros», los contadores de <em>años de experiencia, clientes satisfechos, asesorías y auditorías</em> aparecen <strong>vacíos, sin ninguna cifra</strong>.</li>
+          <li>El buscador de la parte superior no funciona: escribir en él no hace nada.</li>
+          <li>Los siete logos institucionales del pie (SUNAT, Indecopi, OSCE, ONP…) no llevan a ningún lado y sugieren convenios que no existen.</li>
+          <li>El pie dice <strong>«Copyright © la agencia; 2023»</strong>: el nombre de la agencia que armó el sitio y el año congelado hace tres años.</li>
+          <li>El folleto descargable es un PDF de 2,76 MB fechado en marzo de 2023.</li>
+        </ul>
+      </div>
+      <div class="cost"><b>Qué le cuesta</b>Ninguno hunde el negocio por sí solo. Juntos transmiten abandono, justo lo contrario de lo que un cliente busca al elegir quién le lleva la contabilidad.</div>
+    </article>
+
+    <article class="issue">
+      <header>
+        <div class="flags"><span class="ref">D8</span><span class="sev s-warn">Importante</span></div>
+        <h3>Los testimonios no convencen y el equipo no se ve</h3>
+      </header>
+      <div class="desc">
+        <p>Hay tres testimonios sin empresa, sin cargo y sin enlace a una reseña verificable, con el nombre escrito en rojo sobre fondo gris oscuro, casi ilegible. Y en «Nuestro Equipo» aparece una sola persona, cuando el estudio tiene once trabajadores registrados y trece perfiles vinculados en LinkedIn.</p>
+      </div>
+      <div class="cost"><b>Qué le cuesta</b>En este rubro la confianza <em>es</em> el producto. Un estudio de 14 años tiene mucho más que mostrar de lo que hoy muestra su web.</div>
+    </article>
+  </section>
+
+  <!-- ============================================ -->
+  <section id="google">
+    <div class="sec-top">
+      <span class="tag">Parte 2</span>
+      <h2>Por qué Google no los muestra</h2>
+      <p>El sitio existe, pero está construido de forma que Google no puede entenderlo ni recomendarlo.</p>
+    </div>
+
+    <article class="issue">
+      <header>
+        <div class="flags"><span class="ref">D9</span><span class="sev s-alert">Grave</span></div>
+        <h3>Las 15 páginas del sitio se llaman igual en Google</h3>
+      </header>
+      <div class="desc">
+        <p>Todas las páginas — inicio, nosotros, cada servicio, contacto — tienen el mismo título: «[Nombre del estudio] SAC». Y ninguna tiene descripción. Cuando falta, Google arma el resumen con lo primero que encuentra, y hoy está usando el pie de página.</p>
+        <p>Esto es lo que ve hoy quien los busca:</p>
+        <div class="ev" style="margin:12px 0 0;border-radius:3px">«En [Nombre] brindamos servicios integrales de asesoría contable,
+legal y tributaria. Links. Consultar título Sunarp · Sunat ·
+Sunat PDTS Vigentes · Tipo de Cambio…»</div>
+        <p style="margin-top:14px">Detalle importante: Google todavía conserva los títulos de la <em>versión anterior</em> de su web — «[Nombre], Asesoría y Consultoría SAC, Contador y Abogado en Chiclayo, Perú» — que eran mucho mejores que los actuales. El rediseño empeoró su posicionamiento.</p>
+      </div>
+      <div class="cost"><b>Qué le cuesta</b>Ninguna de sus páginas puede competir por búsquedas como «contador en Chiclayo» o «asesoría tributaria Chiclayo», porque ninguna le dice a Google que trata de eso.</div>
+    </article>
+
+    <article class="issue">
+      <header>
+        <div class="flags"><span class="ref">D10</span><span class="sev s-alert">Grave</span></div>
+        <h3>Tienen dos fichas duplicadas en Google, con datos distintos</h3>
+      </header>
+      <div class="desc">
+        <p>Al buscarlos en Google aparecen dos negocios distintos que son el mismo estudio, con direcciones y teléfonos diferentes. Se restan puntos entre sí y reparten las reseñas.</p>
+        <div class="ev" style="margin:12px 0;border-radius:3px">Ficha 1 · «Ficha A»
+   [dirección de oficina] · (0XX) XXXXXX · 4,0 ★ con 5 opiniones
+
+Ficha 2 · «Ficha B»
+   [segunda dirección] · 9YY YYY YYY · sin opiniones</div>
+        <p>A eso se suma que su teléfono cambia según dónde lo busquen: la web dice <strong>(0XX) XXXXXX</strong>, Facebook dice <strong>(0XX) YYYYYY</strong> y <strong>9XX XXX XXX</strong>, y la segunda ficha dice <strong>9YY YYY YYY</strong>.</p>
+      </div>
+      <div class="cost"><b>Qué le cuesta</b>Google usa la coincidencia exacta de nombre, dirección y teléfono entre todos los sitios donde aparece un negocio para decidir a quién muestra primero en el mapa. Hoy esa información no coincide en ningún lado. Y con solo 5 opiniones tras 14 años de trabajo, cualquier competidor con 40 reseñas aparece antes.</div>
+    </article>
+
+    <article class="issue">
+      <header>
+        <div class="flags"><span class="ref">D11</span><span class="sev s-warn">Importante</span></div>
+        <h3>No hay forma de saber qué está funcionando</h3>
+      </header>
+      <div class="desc">
+        <p>El sitio no tiene ninguna herramienta de medición instalada, salvo un píxel de Facebook que solo cuenta visitas. No hay Google Analytics, no hay Search Console, no hay registro de cuántos formularios se envían ni de dónde vienen los visitantes.</p>
+      </div>
+      <div class="cost"><b>Qué le cuesta</b>Hoy no es posible responder «¿cuántos clientes me trajo la web este mes?». Cualquier dinero invertido en publicidad se gasta a ciegas.</div>
+    </article>
+
+    <article class="issue">
+      <header>
+        <div class="flags"><span class="ref">D12</span><span class="sev s-warn">Importante</span></div>
+        <h3>Faltan las señales básicas que Google espera</h3>
+      </header>
+      <div class="desc">
+        <p>No hay mapa del sitio (el archivo que le indica a Google qué páginas existen), no hay datos estructurados que identifiquen al negocio como estudio contable con su dirección y horario, y cualquier dirección inventada dentro del sitio responde «página correcta» en lugar de «no existe», por lo que Google termina guardando páginas vacías.</p>
+        <p>También hay páginas antiguas que siguen enlazadas desde internet, como <em>Clientes</em> y <em>Asesoría Laboral</em>, que hoy muestran «Error la pagina no existe».</p>
+      </div>
+      <div class="cost"><b>Qué le cuesta</b>Google gasta su esfuerzo recorriendo páginas vacías en vez de las que sí importan, y no puede mostrar la ficha enriquecida (horario, teléfono, valoración) que sí muestra a la competencia.</div>
+      <details><summary>Ver el detalle técnico</summary><div class="ev">/sitemap.xml → 404 · sin datos estructurados schema.org
+Cualquier URL inexistente → responde 200 OK con texto de error
+robots.txt con Crawl-delay: 10 (ralentiza el rastreo sin beneficio)
+La versión http:// del sitio no redirige a https:// (contenido duplicado)</div></details>
+    </article>
+  </section>
+
+  <!-- ============================================ -->
+  <section id="legal">
+    <div class="sec-top">
+      <span class="tag">Parte 3</span>
+      <h2>Riesgo legal y de imagen</h2>
+      <p>Este punto merece atención aparte por el rubro en el que están.</p>
+    </div>
+
+    <article class="issue">
+      <header>
+        <div class="flags"><span class="ref">D13</span><span class="sev s-alert">Grave</span></div>
+        <h3>Recogen datos personales sin política de privacidad</h3>
+      </header>
+      <div class="desc">
+        <p>El formulario de contacto pide nombre, correo y teléfono, y el sitio tiene instalado un píxel de Facebook que rastrea a cada visitante. Sin embargo:</p>
+        <ul style="margin:12px 0 0;padding-left:20px;display:grid;gap:8px;font-size:15.5px">
+          <li>No existe página de política de privacidad (la dirección devuelve «página no existe»).</li>
+          <li>No hay casilla de consentimiento en el formulario.</li>
+          <li>No hay aviso de cookies.</li>
+        </ul>
+        <p style="margin-top:14px">Eso incumple la Ley 29733 de Protección de Datos Personales y su reglamento.</p>
+      </div>
+      <div class="cost"><b>Qué le cuesta</b>Más allá de la sanción posible, el costo real es de posición: un estudio que asesora a otras empresas en cumplimiento normativo no puede ser el que incumple en su propia web. Es el tipo de detalle que un cliente exigente nota.</div>
+    </article>
+
+    <article class="issue">
+      <header>
+        <div class="flags"><span class="ref">D14</span><span class="sev s-warn">Importante</span></div>
+        <h3>El sitio corre sobre programación sin mantenimiento desde 2014</h3>
+      </header>
+      <div class="desc">
+        <p>Las librerías con las que está hecho el sitio (jQuery 1.11.1, de 2014, y Bootstrap 3, de 2016) dejaron de recibir soporte hace años y tienen fallas de seguridad conocidas y publicadas. El servidor tampoco envía las protecciones estándar que hoy se esperan, y la versión sin cifrar de la web sigue accesible.</p>
+        <p>El certificado de seguridad, en cambio, está correcto y vigente.</p>
+      </div>
+      <div class="cost"><b>Qué le cuesta</b>Es una puerta abierta innecesaria en un sitio que lleva el nombre de un estudio que maneja información financiera de terceros.</div>
+    </article>
+  </section>
+
+  <!-- ============================================ -->
+  <section id="redes">
+    <div class="sec-top">
+      <span class="tag">Parte 4</span>
+      <h2>Sus redes sociales</h2>
+      <p>Datos verificados el 11 de agosto de 2026 en cada plataforma.</p>
+    </div>
+
+    <div class="net">
+      <article>
+        <h3>Facebook</h3>
+        <p class="figs"><span><b>2.774</b> seguidores</span><span><b>~9</b> reacciones por publicación</span></p>
+        <p>Es su activo más grande y está desaprovechado. Nueve reacciones sobre casi tres mil seguidores es <span class="bad">0,3 % de interacción</span>: la audiencia está dormida. Además, el teléfono publicado ahí no coincide con el de la web.</p>
+      </article>
+
+      <article>
+        <h3>Instagram</h3>
+        <p class="figs"><span><b>275</b> publicaciones</span><span class="bad"><b>42</b> seguidores</span><span>sigue a <b>1</b> cuenta</span></p>
+        <p>El dato más duro de todo el diagnóstico: <span class="bad">275 publicaciones para 42 seguidores</span>. Se está invirtiendo tiempo en producir contenido que casi nadie ve. La cuenta no sigue a nadie ni interactúa, la biografía está cortada a media frase y no tiene enlace a WhatsApp.</p>
+      </article>
+
+      <article>
+        <h3>LinkedIn</h3>
+        <p class="figs"><span><b>123</b> seguidores</span><span><b>13</b> perfiles vinculados</span></p>
+        <p>Es la red donde están las empresas que pueden pagar sus servicios, y donde su descripción es la mejor de todas: especialistas en <strong>construcción civil y contratistas del Estado</strong> (RNP, RNC, OSCE). Publican poco y de forma irregular. Es el canal con más potencial y el menos atendido.</p>
+      </article>
+
+      <article>
+        <h3>Google (fichas del negocio)</h3>
+        <p class="figs"><span><b>2</b> fichas duplicadas</span><span class="bad"><b>5</b> opiniones</span><span><b>4,0</b> ★</span></p>
+        <p>Aquí es donde se decide quién gana una búsqueda local, y es donde están más débiles. Cinco opiniones en catorce años de trabajo, repartidas además entre dos fichas.</p>
+      </article>
+
+      <article>
+        <h3>TikTok y YouTube</h3>
+        <p class="figs"><span>Sin presencia</span></p>
+        <p>Hoy buena parte de las consultas tributarias en Perú se resuelven en video corto. Es el espacio donde un estudio con su experiencia puede diferenciarse rápido y a bajo costo.</p>
+      </article>
+    </div>
+
+    <div class="card" style="margin-top:18px;border-left:4px solid var(--warn)">
+      <p><strong>El patrón de fondo:</strong> no falta trabajo — hay 275 publicaciones y casi tres mil seguidores. Falta el puente. Todo ese contenido lleva a una web sin WhatsApp, sin forma de dejar los datos y sin medición. La atención que generan se pierde justo antes de convertirse en una conversación.</p>
+    </div>
+  </section>
+
+  <!-- ============================================ -->
+  <section id="plan">
+    <div class="sec-top">
+      <span class="tag">Parte 5</span>
+      <h2>Qué vamos a hacer</h2>
+      <p>Tres fases, en orden de impacto. Cada una deja algo funcionando y medible.</p>
+    </div>
+
+    <div class="fase">
+      <span class="when">Fase 1 · Primera semana</span>
+      <h3>Reparar lo que hace perder clientes</h3>
+      <p>Todo lo de la Parte 1. Son arreglos concretos, verificables uno por uno.</p>
+      <ul>
+        <li>Activar la versión móvil del sitio y revisarla en teléfono real (D1)</li>
+        <li>Corregir los botones de teléfono y de correo (D2)</li>
+        <li>Reparar el blog o redirigirlo, y quitar los enlaces rotos de la portada (D3)</li>
+        <li>Reescribir la página de Asesoría Contable con el servicio real (D4)</li>
+        <li>Instalar botón de WhatsApp en todas las páginas, con mensaje precargado según el servicio (D5)</li>
+        <li>Corregir las erratas, activar los contadores de experiencia y limpiar los logos sin enlace (D7)</li>
+        <li>Forzar la versión segura del sitio y arreglar las tipografías bloqueadas y el ícono (D6, D14)</li>
+      </ul>
+      <div class="deliver"><b>Al terminar</b>La web deja de perder a quien ya la encontró. Un cliente puede escribirles por WhatsApp desde el celular en dos toques.</div>
+    </div>
+
+    <div class="fase">
+      <span class="when">Fase 2 · Primer mes</span>
+      <h3>Que Google los encuentre y todo quede medido</h3>
+      <ul>
+        <li>Título y descripción propios para cada página, orientados a las búsquedas reales de Chiclayo (D9)</li>
+        <li>Unificar las dos fichas de Google en una sola y dejar nombre, dirección y teléfono idénticos en web, Facebook, Instagram, LinkedIn y directorios (D10)</li>
+        <li>Instalar Google Analytics y Search Console, con registro de cada llamada, WhatsApp y formulario (D11)</li>
+        <li>Mapa del sitio, datos estructurados del negocio y corrección de las páginas fantasma (D12)</li>
+        <li>Política de privacidad, consentimiento en el formulario y aviso de cookies (D13)</li>
+        <li>Optimizar fotos y archivos para que el sitio cargue rápido en datos móviles (D6)</li>
+        <li>Poner en marcha la solicitud sistemática de reseñas a clientes actuales (D10)</li>
+      </ul>
+      <div class="deliver"><b>Al terminar</b>Cada página compite por su propia búsqueda, la ficha de Google queda limpia y creciendo en reseñas, y al final del mes hay un reporte con números reales de visitas y contactos.</div>
+    </div>
+
+    <div class="fase">
+      <span class="when">Fase 3 · Meses 2 y 3</span>
+      <h3>Convertir visitas en clientes</h3>
+      <ul>
+        <li><strong>Asistente de WhatsApp con inteligencia artificial:</strong> atiende las 24 horas, responde las consultas repetidas (qué régimen le corresponde, qué documentos traer, plazos de SUNAT), toma los datos del interesado y agenda la cita solo cuando ya vale la pena la conversación con un contador</li>
+        <li><strong>Calculadora de régimen tributario</strong> en la web: el emprendedor ingresa sus ingresos y ve qué régimen le conviene. Atrae búsquedas de gente decidida y deja sus datos a cambio del resultado</li>
+        <li><strong>Recordatorios automáticos de vencimientos</strong> por WhatsApp a la cartera actual, según el último dígito del RUC</li>
+        <li>Página propia para cada servicio, con la especialidad en construcción civil y contrataciones con el Estado al frente, que hoy está escondida</li>
+        <li>Contenido en video corto para Instagram y TikTok a partir del calendario tributario mensual</li>
+        <li>Reactivación de los 2.774 seguidores de Facebook hacia el canal de WhatsApp</li>
+      </ul>
+      <div class="deliver"><b>Al terminar</b>Las consultas entran solas y llegan filtradas al equipo. El estudio deja de depender de que alguien esté disponible para responder.</div>
+    </div>
+  </section>
+
+  <div class="close">
+    <h2>Sobre este documento</h2>
+    <p>Este es un diagnóstico real entregado a un cliente, publicado con su identidad anonimizada. Todos los hallazgos fueron verificados mediante inspección directa del sitio, no estimados.</p>
+    <p>Si quieres el mismo diagnóstico sobre tu web y tus redes, escríbeme.</p>
+    <div class="sign">
+      <div class="name">Tito Castro</div>
+      <div class="role">Director IA</div>
+      <div class="contact">
+        <span>Consultoría y automatización con inteligencia artificial</span>
+        <a href="https://wa.me/51959546590"><span class="lbl">WhatsApp</span>959 546 590</a>
+        <a href="mailto:tito.castro@directoria.pe"><span class="lbl">Correo</span>tito.castro@directoria.pe</a>
+      </div>
+    </div>
+  </div>
+
+  <p class="foot">Diagnóstico realizado el 11 de agosto de 2026 mediante inspección directa del sitio (código, servidor, velocidad y errores), pruebas sobre 25 direcciones del dominio, revisión del certificado de seguridad y consulta de los perfiles públicos de Facebook, Instagram, LinkedIn y los resultados locales de Google. No se envió el formulario de contacto para no generar correos de prueba en su bandeja, por lo que conviene verificar internamente que siga llegando.</p>
+
+</div>
+
+</body>
+</html>
