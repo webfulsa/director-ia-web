@@ -1,0 +1,576 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Asistente de WhatsApp para su estudio contable — Demostración</title>
+<meta name="description" content="Demostración interactiva de un asistente que responde a los clientes del estudio: vencimientos de SUNAT, recepción de documentos, planillas y trámites.">
+<meta name="theme-color" content="#101317">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Director IA">
+<meta property="og:locale" content="es_PE">
+<meta property="og:url" content="https://www.directoria.pe/demo-contable/">
+<meta property="og:title" content="Un asistente que atiende a sus clientes solo">
+<meta property="og:description" content="Responde vencimientos, recibe documentos y deriva al contador lo que necesita criterio. Pruébelo usted mismo.">
+<meta property="og:image" content="https://www.directoria.pe/demo-contable/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Conversación de WhatsApp entre un cliente y el asistente del estudio contable">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+<body>
+<style>
+  :root {
+    --bg: #101317;
+    --panel: #191D23;
+    --panel-2: #21262E;
+    --line: #2C333C;
+    --line-2: #3B434E;
+    --tx: #E6E9ED;
+    --tx-2: #A8B2BE;
+    --tx-3: #6E7986;
+    --amber: #F2A33C;
+    --amber-dim: #3A2C16;
+    --wa-green: #128C7E;
+    --wa-head: #1F2C34;
+    --wa-bg: #0B141A;
+    --wa-out: #005C4B;
+    --wa-in: #202C33;
+    --wa-tx: #E9EDEF;
+    --wa-tx2: #8696A0;
+    --ok: #4FBF9F;
+    --esc: #E0803C;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --mono: ui-monospace, "SF Mono", "Cascadia Mono", Consolas, monospace;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--tx);
+    font-family: var(--sans); font-size: 15px; line-height: 1.55;
+    -webkit-text-size-adjust: 100%;
+  }
+  .shell { max-width: 1180px; margin: 0 auto; padding: 20px 16px 60px; }
+
+  /* ---------- cabecera ---------- */
+  .top { border-bottom: 1px solid var(--line); padding-bottom: 18px; margin-bottom: 22px; }
+  .badge {
+    display: inline-block; font-family: var(--mono); font-size: 10.5px; letter-spacing: .14em;
+    text-transform: uppercase; color: var(--amber); background: var(--amber-dim);
+    border: 1px solid #5A4520; padding: 4px 10px; border-radius: 99px; margin-bottom: 14px;
+  }
+  h1 { font-size: 26px; line-height: 1.18; margin: 0 0 10px; font-weight: 700; letter-spacing: -.015em; text-wrap: balance; }
+  .top p { color: var(--tx-2); margin: 0; max-width: 68ch; font-size: 15px; }
+  .top p + p { margin-top: 8px; }
+
+  /* ---------- layout ---------- */
+  .grid { display: grid; gap: 20px; grid-template-columns: 1fr; }
+  @media (min-width: 900px) { .grid { grid-template-columns: 400px 1fr; align-items: start; } }
+
+  /* ---------- teléfono ---------- */
+  .phone {
+    background: var(--wa-bg); border: 1px solid var(--line-2); border-radius: 16px;
+    overflow: hidden; display: flex; flex-direction: column; height: 620px;
+    box-shadow: 0 20px 50px -30px #000;
+  }
+  .wa-head {
+    background: var(--wa-head); padding: 11px 14px; display: flex; align-items: center; gap: 11px;
+    border-bottom: 1px solid #2A3942; flex: none;
+  }
+  .ava {
+    width: 38px; height: 38px; border-radius: 99px; background: var(--wa-green);
+    display: grid; place-items: center; font-weight: 700; font-size: 14px; color: #fff; flex: none;
+  }
+  .wa-head .who { min-width: 0; }
+  .wa-head .nm { font-size: 15px; font-weight: 600; color: var(--wa-tx); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .wa-head .st { font-size: 12px; color: var(--wa-tx2); }
+  .wa-head .st b { color: var(--ok); font-weight: 600; }
+
+  .stream {
+    flex: 1; overflow-y: auto; padding: 14px 12px 8px;
+    background-color: var(--wa-bg);
+    background-image: radial-gradient(circle at 20% 30%, rgba(255,255,255,.018) 1px, transparent 1px),
+                      radial-gradient(circle at 70% 60%, rgba(255,255,255,.014) 1px, transparent 1px);
+    background-size: 34px 34px, 46px 46px;
+    display: flex; flex-direction: column; gap: 8px;
+    scroll-behavior: smooth;
+  }
+  .msg {
+    max-width: 82%; padding: 7px 10px 6px; border-radius: 8px; font-size: 14.2px; line-height: 1.48;
+    color: var(--wa-tx); position: relative; white-space: pre-wrap; word-wrap: break-word;
+    animation: pop .18s ease-out;
+  }
+  @keyframes pop { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: none; } }
+  .msg.in { background: var(--wa-in); align-self: flex-start; border-top-left-radius: 2px; }
+  .msg.out { background: var(--wa-out); align-self: flex-end; border-top-right-radius: 2px; }
+  .msg .t { font-size: 10.5px; color: var(--wa-tx2); float: right; margin: 6px 0 0 8px; }
+  .msg.out .t { color: #8FC7B8; }
+  .msg b { font-weight: 650; }
+  .msg .tbl { font-family: var(--mono); font-size: 12.4px; line-height: 1.7; display: block; margin: 6px 0 2px; }
+  .sys {
+    align-self: center; font-size: 11.5px; color: var(--wa-tx2); background: #182229;
+    padding: 4px 12px; border-radius: 6px; text-align: center; max-width: 90%;
+  }
+  .typing { align-self: flex-start; background: var(--wa-in); padding: 11px 14px; border-radius: 8px; border-top-left-radius: 2px; display: flex; gap: 4px; }
+  .typing i { width: 6px; height: 6px; background: var(--wa-tx2); border-radius: 99px; animation: bl 1.1s infinite; }
+  .typing i:nth-child(2) { animation-delay: .18s; }
+  .typing i:nth-child(3) { animation-delay: .36s; }
+  @keyframes bl { 0%,60%,100% { opacity: .3; } 30% { opacity: 1; } }
+
+  .composer { background: var(--wa-head); padding: 9px 10px; display: flex; gap: 8px; flex: none; border-top: 1px solid #2A3942; }
+  .composer input {
+    flex: 1; background: #2A3942; border: 0; border-radius: 20px; padding: 10px 15px;
+    color: var(--wa-tx); font-size: 14.5px; font-family: var(--sans); min-width: 0;
+  }
+  .composer input::placeholder { color: var(--wa-tx2); }
+  .composer input:focus { outline: 2px solid var(--wa-green); }
+  .composer button {
+    background: var(--wa-green); border: 0; width: 40px; height: 40px; border-radius: 99px;
+    color: #fff; font-size: 17px; cursor: pointer; flex: none; display: grid; place-items: center;
+  }
+  .composer button:hover { background: #15a396; }
+
+  /* ---------- chips ---------- */
+  .chips { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 12px; }
+  .chips button {
+    background: var(--panel-2); border: 1px solid var(--line-2); color: var(--tx-2);
+    font-family: var(--sans); font-size: 12.8px; padding: 7px 12px; border-radius: 99px; cursor: pointer;
+    text-align: left;
+  }
+  .chips button:hover { border-color: var(--amber); color: var(--tx); }
+  .chips button:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
+  .chips-lbl { font-family: var(--mono); font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--tx-3); margin: 18px 0 0; }
+
+  /* ---------- panel derecho ---------- */
+  .side { display: grid; gap: 16px; }
+  .box { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+  .box > h2 {
+    font-size: 12px; font-family: var(--mono); letter-spacing: .12em; text-transform: uppercase;
+    color: var(--tx-3); margin: 0; padding: 13px 16px; border-bottom: 1px solid var(--line);
+    background: var(--panel-2); font-weight: 600;
+  }
+  .box .in { padding: 14px 16px; }
+
+  .kpis { display: grid; grid-template-columns: repeat(3, 1fr); }
+  .kpi { padding: 15px 14px; border-right: 1px solid var(--line); }
+  .kpi:last-child { border-right: 0; }
+  .kpi .n { font-size: 30px; font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums; letter-spacing: -.02em; }
+  .kpi .n.a { color: var(--ok); }
+  .kpi .n.b { color: var(--esc); }
+  .kpi .n.c { color: var(--amber); }
+  .kpi .l { font-size: 11.5px; color: var(--tx-3); margin-top: 6px; line-height: 1.35; }
+
+  .log { max-height: 300px; overflow-y: auto; }
+  .log ul { list-style: none; margin: 0; padding: 0; }
+  .log li { padding: 11px 16px; border-bottom: 1px solid var(--line); display: flex; gap: 11px; align-items: flex-start; font-size: 13.4px; animation: pop .2s ease-out; }
+  .log li:last-child { border-bottom: 0; }
+  .log .dot { width: 7px; height: 7px; border-radius: 99px; margin-top: 6px; flex: none; background: var(--ok); }
+  .log .dot.esc { background: var(--esc); }
+  .log .dot.doc { background: #6BA5E0; }
+  .log .dot.pay { background: var(--amber); }
+  .log .tx { min-width: 0; }
+  .log .tx b { display: block; font-weight: 600; font-size: 13.4px; }
+  .log .tx span { color: var(--tx-3); font-size: 12.2px; }
+  .log .empty { padding: 22px 16px; color: var(--tx-3); font-size: 13.4px; }
+
+  .note { font-size: 13px; color: var(--tx-2); line-height: 1.55; }
+  .note b { color: var(--tx); }
+  .note code { font-family: var(--mono); font-size: 12px; background: var(--panel-2); padding: 1px 5px; border-radius: 3px; }
+
+  .acts { display: flex; flex-wrap: wrap; gap: 8px; }
+  .acts button {
+    background: transparent; border: 1px solid var(--line-2); color: var(--tx-2);
+    font-family: var(--sans); font-size: 13px; padding: 9px 13px; border-radius: 6px; cursor: pointer;
+  }
+  .acts button:hover { border-color: var(--amber); color: var(--tx); }
+  .acts button.primary { background: var(--amber); border-color: var(--amber); color: #1A1206; font-weight: 600; }
+  .acts button.primary:hover { background: #f5b45f; }
+
+  .src { font-size: 12px; color: var(--tx-3); line-height: 1.6; }
+  .src b { color: var(--tx-2); font-weight: 600; }
+  @media (prefers-reduced-motion: reduce) { *, .stream { animation: none !important; scroll-behavior: auto !important; } }
+</style>
+
+<div class="shell">
+
+  <div class="top">
+    <span class="badge">Demostración · no es un canal de atención real</span>
+    <h1>Asistente de WhatsApp para un estudio contable</h1>
+    <p>Así responde a los clientes del estudio, todos los días, sin que nadie del equipo levante el teléfono. Escriba una consulta o toque una de las sugerencias.</p>
+    <p>Los datos tributarios y laborales que usa son reales y están vigentes a agosto de 2026. Cuando una consulta necesita criterio profesional, no improvisa: la deriva al contador.</p>
+  </div>
+
+  <div class="grid">
+
+    <div>
+      <div class="phone">
+        <div class="wa-head">
+          <div class="ava">EA</div>
+          <div class="who">
+            <div class="nm">Estudio Ecosam · Asistente (DEMO)</div>
+            <div class="st"><b>en línea</b> · responde al instante</div>
+          </div>
+        </div>
+        <div class="stream" id="stream"></div>
+        <form class="composer" id="form" autocomplete="off">
+          <input id="input" type="text" placeholder="Escriba su consulta…" aria-label="Escriba su consulta">
+          <button type="submit" aria-label="Enviar">➤</button>
+        </form>
+      </div>
+
+      <p class="chips-lbl">Pruebe con una de estas</p>
+      <div class="chips" id="chips"></div>
+    </div>
+
+    <div class="side">
+
+      <div class="box">
+        <h2>Lo que le ahorró al equipo</h2>
+        <div class="kpis">
+          <div class="kpi"><div class="n a" id="k1">0</div><div class="l">consultas resueltas solas</div></div>
+          <div class="kpi"><div class="n b" id="k2">0</div><div class="l">derivadas al contador</div></div>
+          <div class="kpi"><div class="n c" id="k3">0</div><div class="l">minutos de equipo liberados</div></div>
+        </div>
+      </div>
+
+      <div class="box">
+        <h2>Lo que hizo por detrás</h2>
+        <div class="log" id="log"><div class="empty">Cada acción del asistente aparece acá: consultas resueltas, documentos recibidos, citas agendadas y casos derivados.</div></div>
+      </div>
+
+      <div class="box">
+        <h2>Cobranza automática</h2>
+        <div class="in">
+          <p class="note" style="margin:0 0 12px">Además de responder, el asistente sale a buscar la cuota antes de que venza. Toque para ver el mensaje que le llega al cliente.</p>
+          <div class="acts">
+            <button type="button" data-cob="previo">5 días antes</button>
+            <button type="button" data-cob="dia">El día del vencimiento</button>
+            <button type="button" data-cob="mora">15 días de mora</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="box">
+        <h2>Cómo leer esta demo</h2>
+        <div class="in">
+          <p class="note" style="margin:0 0 10px"><b>Esto es una maqueta que corre en su navegador</b>, no el sistema final. Sirve para ver el comportamiento y el tono, no el volumen.</p>
+          <p class="note" style="margin:0 0 10px">En la versión real se conecta al WhatsApp del estudio, consulta el padrón de clientes para saber quién escribe y qué régimen tiene, y deja registrado todo en un panel.</p>
+          <p class="note" style="margin:0"><b>Fíjese en dos cosas:</b> lo que responde solo, y sobre todo lo que <em>no</em> responde solo.</p>
+          <div class="acts" style="margin-top:14px">
+            <button type="button" class="primary" id="reset">Reiniciar conversación</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="box">
+        <h2>Fuentes de los datos</h2>
+        <div class="in">
+          <p class="src" style="margin:0"><b>Cronograma SUNAT 2026</b> por último dígito de RUC · <b>UIT 2026:</b> S/ 5,500 (D.S. 301-2025-EF) · <b>Topes de régimen:</b> NRUS S/ 96,000, RER S/ 525,000, RMT 1,700 UIT · <b>Cuarta categoría 2026:</b> R.S. 000390-2025/SUNAT · <b>RMV:</b> S/ 1,130 (D.S. 006-2024-TR) · <b>CTS y gratificaciones:</b> Ley 27735 y normas de depósito semestral.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  var stream = document.getElementById('stream');
+  var form = document.getElementById('form');
+  var input = document.getElementById('input');
+  var chipsBox = document.getElementById('chips');
+  var logBox = document.getElementById('log');
+  var state = { solved: 0, escalated: 0, awaiting: null };
+
+  // ---------- datos reales ----------
+  var CRONO_AGO = { '0':'martes 11 de agosto', '9':'miércoles 12 de agosto', '1':'jueves 13 de agosto', '2':'viernes 14 de agosto', '3':'lunes 17 de agosto', '4':'martes 18 de agosto', '5':'miércoles 19 de agosto', '6':'jueves 20 de agosto', '7':'viernes 21 de agosto', '8':'lunes 24 de agosto' };
+  var CRONO_SET = { '0':'jueves 10 de setiembre', '9':'viernes 11 de setiembre', '1':'lunes 14 de setiembre', '2':'martes 15 de setiembre', '3':'miércoles 16 de setiembre', '4':'jueves 17 de setiembre', '5':'viernes 18 de setiembre', '6':'lunes 21 de setiembre', '7':'martes 22 de setiembre', '8':'miércoles 23 de setiembre' };
+
+  function norm(s) {
+    return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[¿?¡!.,;:]/g, ' ').replace(/\s+/g, ' ').trim();
+  }
+  function hora() {
+    var d = new Date(), h = d.getHours(), m = d.getMinutes();
+    var ap = h >= 12 ? 'p.m.' : 'a.m.'; h = h % 12; if (h === 0) h = 12;
+    return h + ':' + (m < 10 ? '0' + m : m) + ' ' + ap;
+  }
+
+  // ---------- base de conocimiento ----------
+  var INTENTS = [
+    { id: 'vencimiento', keys: ['cuando vence','vencimiento','cronograma','fecha de pago','cuando declaro','cuando pago','vence mi declaracion','fecha limite','cronograma sunat','cuando presento'],
+      ask: 'digito',
+      reply: 'Con gusto. Para darle la fecha exacta necesito el <b>último dígito de su RUC</b>.\n\nRespóndame solo con ese número.' },
+
+    { id: 'cuanto_pago', keys: ['cuanto tengo que pagar','cuanto pago','cuanto debo pagar','cuanto sale','mi impuesto','cuanto es mi impuesto'],
+      escalate: true,
+      reply: 'Ese monto depende de sus ventas y compras del mes, así que no se lo puedo estimar por acá sin revisar sus comprobantes.\n\n<b>Ya le avisé al equipo</b> para que le confirme la cifra hoy mismo. Si aún le falta enviar comprobantes del mes, este es buen momento.' },
+
+    { id: 'voucher', keys: ['ya pague','le mando el voucher','adjunto voucher','constancia de pago','ya deposite','ya cancele','envio el voucher','aqui esta el pago'],
+      logKind: 'pay', logTitle: 'Pago registrado', logSub: 'Voucher recibido y adjuntado al expediente del cliente',
+      reply: '¡Recibido! Registré su pago y lo adjunté a su expediente del mes. ✅\n\nSu contador lo valida contra la declaración y, si algo no cuadra, le escribe. Si no le decimos nada, quedó conforme.' },
+
+    { id: 'documentos', keys: ['le mando las facturas','envio comprobantes','mando mis facturas','aqui estan mis comprobantes','le paso las boletas','envio los documentos','mis facturas del mes'],
+      logKind: 'doc', logTitle: 'Comprobantes recibidos', logSub: 'Clasificados por periodo y derivados al área contable',
+      reply: 'Perfecto, ya los tengo. Los clasifiqué por periodo y se los pasé al área contable. 📄\n\nSi al revisarlos falta alguno, le aviso antes del cierre. ¿Está completo el mes o va a enviar más?' },
+
+    { id: 'recibieron', keys: ['ya recibieron','llegaron mis comprobantes','recibieron mis facturas','les llego lo que mande'],
+      reply: 'Sí, sus comprobantes de este periodo están recibidos y en proceso. 📥\n\nEl cierre del mes lo hacemos siempre antes de su fecha de vencimiento, así que va dentro de plazo.' },
+
+    { id: 'regimen', keys: ['que regimen','regimen me conviene','nrus rer','cambiar de regimen','regimen tributario','rus o rer','mype tributario','que regimen elijo'],
+      reply: 'Se lo resumo con los topes vigentes de 2026 (UIT S/ 5,500):\n<span class="tbl">• <b>NRUS</b> — hasta S/ 96,000 al año (S/ 8,000 al mes). Cuota fija de S/ 20 o S/ 50. Solo boletas, no factura.\n• <b>RER</b> — hasta S/ 525,000 al año. Paga 1.5% de sus ingresos netos del mes. Sí emite factura.\n• <b>RMT</b> — hasta 1,700 UIT (S/ 9,350,000). 10% sobre las primeras 15 UIT de utilidad y 29.5% el resto.\n• <b>General</b> — sin tope. 29.5% sobre la utilidad.</span>\nCuál le conviene depende de su margen real y de si sus clientes le piden factura. <b>Le pedí al contador que lo evalúe con sus números</b> y le dé la recomendación.',
+      escalate: true },
+
+    { id: 'clave_sol', keys: ['clave sol','olvide mi clave','no tengo clave','perdi mi clave','recuperar clave'],
+      reply: 'Tranquilo, eso se recupera. Hay dos caminos:\n<span class="tbl">1. Usted mismo en SUNAT Virtual, con su DNI y el correo registrado.\n2. Nosotros la gestionamos si ya nos dejó autorización.</span>\n¿Prefiere que lo hagamos nosotros? Si me confirma, lo dejo agendado y le avisamos apenas esté lista.' },
+
+    { id: 'notificacion', keys: ['notificacion de sunat','me llego una esquela','buzon electronico','sunat me notifico','requerimiento','me llego una carta de sunat','fiscalizacion'],
+      escalate: true, logKind: 'esc', logTitle: 'Notificación SUNAT — urgente', logSub: 'Derivado al contador con prioridad alta',
+      reply: 'Esto lo vemos de inmediato. 🔴\n\nLas notificaciones tienen plazo y no conviene dejarlas correr. <b>Ya derivé su caso al contador con prioridad alta.</b>\n\nMándeme una foto o el PDF del documento y así lo revisa con todo a la mano.' },
+
+    { id: 'detraccion', keys: ['detraccion','liberar fondos','liberacion de detracciones','cuenta de detracciones','me detrajeron'],
+      reply: 'La liberación de fondos de detracciones se solicita en periodos determinados del año y exige no tener deuda pendiente ni omisiones de declaración.\n\nComo el resultado depende de cómo esté su cuenta ahorita, <b>le pedí al contador que revise su situación</b> y le confirme si califica en este periodo.',
+      escalate: true },
+
+    { id: 'cuarta', keys: ['cuarta categoria','suspension de retenciones','recibo por honorarios','1609','me retienen','4ta categoria'],
+      reply: 'Para 2026 los topes son estos:\n<span class="tbl">• Suspensión de retenciones: ingresos proyectados del año hasta <b>S/ 48,125</b>.\n• Si es director, gerente o similar: hasta <b>S/ 38,500</b>.\n• Referencia mensual: S/ 4,010 (o S/ 3,208 según el caso).</span>\nSe solicita con el <b>Formulario Virtual 1609</b> desde SUNAT Virtual con su Clave SOL. Si quiere, se lo tramitamos nosotros.' },
+
+    { id: 'cts', keys: ['cts','compensacion por tiempo de servicios','cuanto de cts','deposito de cts'],
+      reply: 'La CTS se deposita <b>dos veces al año</b>:\n<span class="tbl">• Hasta el <b>15 de mayo</b> — por el periodo de noviembre a abril.\n• Hasta el <b>15 de noviembre</b> — por el periodo de mayo a octubre.</span>\nSe calcula sobre la remuneración computable (sueldo + conceptos regulares como asignación familiar) más <b>un sexto de la gratificación</b> del semestre.\n\nSi me dice cuántos trabajadores tiene, le pido al área de planillas el cálculo exacto de noviembre.' },
+
+    { id: 'grati', keys: ['gratificacion','grati','aguinaldo','fiestas patrias sueldo','bonificacion extraordinaria'],
+      reply: 'Las gratificaciones son dos al año y se pagan:\n<span class="tbl">• Hasta el <b>15 de julio</b> — Fiestas Patrias.\n• Hasta el <b>15 de diciembre</b> — Navidad.</span>\nSe paga un sueldo completo (si trabajó el semestre entero) más la <b>bonificación extraordinaria del 9%</b> que el empleador aporta —o 6.75% si el trabajador está en EPS.\n\nOjo con la fecha: pagarla tarde es infracción laboral.' },
+
+    { id: 'contratar', keys: ['voy a contratar','nuevo trabajador','contratar personal','dar de alta','t registro','planilla nueva','ingresar un trabajador'],
+      logKind: 'ok', logTitle: 'Alta de trabajador solicitada', logSub: 'Checklist enviado · pendiente recibir documentos',
+      reply: 'Le paso lo que necesitamos para darlo de alta:\n<span class="tbl">1. DNI del trabajador (foto de ambos lados).\n2. Fecha exacta de ingreso.\n3. Sueldo pactado y jornada.\n4. Régimen de pensión: ONP o AFP (y cuál).\n5. Si tiene hijos menores — corresponde asignación familiar.</span>\n<b>El alta en T-Registro debe hacerse el día del ingreso o antes</b>, nunca después. Mándeme los datos y lo dejamos listo.' },
+
+    { id: 'despido', keys: ['despedir','liquidacion','cuanto le corresponde','finiquito','renuncio mi trabajador','cese de trabajador','retirar a un trabajador'],
+      escalate: true, logKind: 'esc', logTitle: 'Consulta laboral sensible', logSub: 'Derivada al abogado laboralista del estudio',
+      reply: 'Esto lo tiene que ver un abogado, no yo. Un cese mal hecho termina en demanda y sale mucho más caro que hacerlo bien desde el inicio.\n\n<b>Ya derivé su consulta al área legal del estudio</b> para que lo llamen. Vaya teniendo a la mano la fecha de ingreso, el motivo del cese y el último sueldo.' },
+
+    { id: 'boletas', keys: ['boletas de pago','planilla del mes','plame','boletas de mis trabajadores','sueldos del mes'],
+      logKind: 'doc', logTitle: 'Boletas solicitadas', logSub: 'Pedido enviado al área de planillas',
+      reply: 'Se las pido a planillas ahora mismo y se las envío por acá en cuanto estén. 🧾\n\n¿Las quiere del mes en curso o de un periodo anterior?' },
+
+    { id: 'constitucion', keys: ['constituir','formalizar mi negocio','abrir una empresa','crear una sac','constitucion de empresa','sacar ruc','formalizar'],
+      logKind: 'ok', logTitle: 'Consulta comercial — constitución', logSub: 'Prospecto nuevo registrado para seguimiento',
+      reply: '¡Excelente decisión! El estudio hace la <b>constitución de empresas sin costo</b> si nos deja la contabilidad, e incluye:\n<span class="tbl">• Búsqueda y reserva del nombre en SUNARP\n• Elaboración de la minuta\n• Inscripción en SUNARP\n• Obtención del RUC</span>\nPara cotizarle bien: ¿a qué se va a dedicar el negocio y cuánto calcula facturar al mes? Con eso le decimos qué régimen le conviene desde el arranque.' },
+
+    { id: 'precio', keys: ['cuanto cobran','cuanto cuesta la contabilidad','cuanto cuesta llevar mi contabilidad','honorarios','cuanto me cobrarian','precio de la contabilidad','tarifa mensual','costo del servicio contable'],
+      logKind: 'ok', logTitle: 'Consulta de precio', logSub: 'Prospecto nuevo · datos capturados para cotizar',
+      reply: 'La cuota mensual depende de tres cosas: su régimen, cuántos comprobantes mueve al mes y si tiene trabajadores en planilla.\n\nPara pasarle un número real y no una cifra al aire, dígame:\n<span class="tbl">1. ¿En qué régimen está hoy?\n2. ¿Cuántas facturas emite y recibe al mes, más o menos?\n3. ¿Cuántos trabajadores tiene?</span>\nCon eso le mando la propuesta hoy mismo.' },
+
+    { id: 'construccion', keys: ['construccion civil','contratista','osce','rnp','licitacion','obras con el estado','contratar con el estado'],
+      logKind: 'ok', logTitle: 'Prospecto de alto valor', logSub: 'Construcción civil / contrataciones con el Estado',
+      reply: 'Sí, es justamente una de nuestras especialidades. 🏗️\n\nEl estudio atiende a <b>empresas de construcción civil y contratistas del Estado</b>: inscripción y renovación en el RNP, aumento de capacidad de contratación, y la contabilidad y planillas propias del régimen de construcción civil.\n\n¿Ya está inscrito en el RNP o recién va a empezar?' },
+
+    { id: 'estados', keys: ['estados financieros','balance','para el banco','necesito mi balance','declaracion jurada anual','sustento para prestamo'],
+      logKind: 'doc', logTitle: 'Estados financieros solicitados', logSub: 'Pedido derivado con fecha de necesidad',
+      reply: 'Se los preparamos. Para saber qué versión necesita: <b>¿es para un banco, para una licitación o para uso interno?</b>\n\nY si tiene fecha límite, dígamela — así lo priorizamos.' },
+
+    { id: 'ficha_ruc', keys: ['ficha ruc','constancia de ruc','mi ficha','consultar ruc','constancia de contribuyente'],
+      reply: 'Se la envío en un momento. 📄\n\nDe paso: la ficha RUC la puede descargar usted mismo cuando la necesite desde SUNAT Virtual con su Clave SOL, en Mi RUC y Otros Registros. Si prefiere, se la mandamos nosotros cada vez.' },
+
+    { id: 'facturacion', keys: ['emitir factura','facturacion electronica','sistema de facturacion','emito boleta','comprobante electronico','sire','libros electronicos'],
+      reply: 'Todos los comprobantes son electrónicos, así que se emiten desde el sistema de SUNAT o desde un facturador autorizado.\n\nY tenga presente el <b>SIRE</b>: los registros de compras y ventas se llevan en la plataforma de SUNAT, no en Excel. Nosotros nos encargamos de esa parte por usted.\n\n¿Necesita que le configuremos su facturación o ya la tiene andando?' },
+
+    { id: 'horario', keys: ['horario','a que hora atienden','estan abiertos','donde quedan','direccion','oficina','cuando puedo ir'],
+      reply: 'El horario de oficina es de <b>lunes a viernes de 9:00 a.m. a 6:00 p.m.</b> y <b>sábados de 9:00 a.m. a 1:00 p.m.</b>\n\nPor acá me tiene las 24 horas. Si quiere venir presencialmente, le agendo la cita — dígame qué día le queda cómodo.' },
+
+    { id: 'cita', keys: ['quiero una cita','agendar','reunion','quiero conversar','puedo ir el sabado','sacar cita','hablar con el contador'],
+      logKind: 'ok', logTitle: 'Cita solicitada', logSub: 'Agendada con resumen previo del caso para el contador',
+      reply: 'Se la agendo. 📅\n\nPara que no pierda tiempo explicando todo de nuevo, <b>le voy a pasar al contador un resumen de esta conversación</b>, así llega con su caso ya leído.\n\n¿Le queda mejor sábado por la mañana o un día de semana?' },
+
+    { id: 'gracias', keys: ['gracias','muchas gracias','ok gracias','perfecto gracias','ya esta'],
+      noCount: true,
+      reply: 'A usted. Cualquier cosa me escribe por acá, a la hora que sea. 👋' },
+
+    { id: 'saludo', keys: ['hola','buenos dias','buenas tardes','buenas noches','buen dia','que tal'],
+      noCount: true,
+      reply: '¡Hola! Soy el asistente del estudio. 👋\n\nLe puedo ayudar con vencimientos, sus comprobantes, planillas, regímenes o agendarle una cita con el contador.\n\n¿Qué necesita?' }
+  ];
+
+  var COBRANZA = {
+    previo: '¡Buen día, Sr. Ramírez! 👋\n\nLe recuerdo que su cuota mensual del estudio vence el <b>viernes 21 de agosto</b>. El monto es de S/ 450.\n\nPuede pagar por transferencia o Yape al número de siempre. Cuando lo haga, mándeme el voucher por acá y yo lo registro al toque.',
+    dia: 'Sr. Ramírez, buenos días. 📌\n\n<b>Hoy vence su cuota</b> del mes (S/ 450). Si ya la pagó, mándeme nomás el voucher y lo registro.\n\nY si necesita unos días, dígamelo con confianza y lo coordino con administración — mejor conversarlo que dejarlo pasar.',
+    mora: 'Sr. Ramírez, ¿cómo está? 🙏\n\nSu cuota de agosto está pendiente hace 15 días y no quiero que se le acumule con la de setiembre.\n\n¿Le viene bien pagarla esta semana, o prefiere que le arme un acuerdo en dos partes? Dígame cuál le acomoda y lo dejo coordinado.'
+  };
+
+  var CHIPS = [
+    '¿Cuándo vence mi declaración este mes?',
+    'Ya pagué, le mando el voucher',
+    'Le mando las facturas del mes',
+    '¿Qué régimen me conviene?',
+    'Me llegó una notificación de SUNAT',
+    'Voy a contratar a un trabajador',
+    '¿Cuánto de CTS le toca a mi trabajador?',
+    'Quiero despedir a un trabajador',
+    '¿Cuánto cobran por la contabilidad?',
+    'Olvidé mi clave SOL',
+    'Necesito mi balance para el banco',
+    '¿Atienden a contratistas del Estado?',
+    'Quiero formalizar mi negocio',
+    'Quiero una cita con el contador'
+  ];
+
+  // ---------- render ----------
+  function scroll() { stream.scrollTop = stream.scrollHeight; }
+
+  function push(text, side, isHtml) {
+    var d = document.createElement('div');
+    d.className = 'msg ' + side;
+    var body = document.createElement('span');
+    if (isHtml) { body.innerHTML = text; } else { body.textContent = text; }
+    d.appendChild(body);
+    var t = document.createElement('span');
+    t.className = 't';
+    t.textContent = hora() + (side === 'out' ? ' ✓✓' : '');
+    d.appendChild(t);
+    stream.appendChild(d);
+    scroll();
+  }
+
+  function sys(text) {
+    var d = document.createElement('div');
+    d.className = 'sys';
+    d.textContent = text;
+    stream.appendChild(d);
+    scroll();
+  }
+
+  function typing(on) {
+    var ex = document.getElementById('typing');
+    if (on && !ex) {
+      var d = document.createElement('div');
+      d.className = 'typing'; d.id = 'typing';
+      d.innerHTML = '<i></i><i></i><i></i>';
+      stream.appendChild(d); scroll();
+    } else if (!on && ex) { ex.remove(); }
+  }
+
+  function addLog(kind, title, sub) {
+    var empty = logBox.querySelector('.empty');
+    if (empty) { empty.remove(); var ul = document.createElement('ul'); ul.id = 'logul'; logBox.appendChild(ul); }
+    var ul2 = document.getElementById('logul');
+    if (!ul2) { ul2 = document.createElement('ul'); ul2.id = 'logul'; logBox.appendChild(ul2); }
+    var li = document.createElement('li');
+    li.innerHTML = '<span class="dot ' + kind + '"></span><span class="tx"><b></b><span></span></span>';
+    li.querySelector('b').textContent = title;
+    li.querySelector('.tx span').textContent = sub;
+    ul2.insertBefore(li, ul2.firstChild);
+  }
+
+  function kpis() {
+    document.getElementById('k1').textContent = state.solved;
+    document.getElementById('k2').textContent = state.escalated;
+    document.getElementById('k3').textContent = Math.round(state.solved * 2.5 + state.escalated * 1);
+  }
+
+  function match(txt) {
+    var n = norm(txt), best = null, bestScore = 0;
+    for (var i = 0; i < INTENTS.length; i++) {
+      var it = INTENTS[i];
+      for (var j = 0; j < it.keys.length; j++) {
+        var k = norm(it.keys[j]);
+        var score = 0;
+        if (n.indexOf(k) !== -1) { score = k.length + 12; }
+        else {
+          var words = k.split(' '), hit = 0;
+          for (var w = 0; w < words.length; w++) { if (words[w].length > 3 && n.indexOf(words[w]) !== -1) hit++; }
+          if (words.length > 1 && hit >= Math.ceil(words.length * 0.7)) score = hit * 4;
+        }
+        if (score > bestScore) { bestScore = score; best = it; }
+      }
+    }
+    return bestScore >= 8 ? best : null;
+  }
+
+  function respond(userText) {
+    // flujo con estado: esperando dígito de RUC
+    if (state.awaiting === 'digito') {
+      var dig = (userText.match(/\d/g) || []).pop();
+      state.awaiting = null;
+      if (dig && CRONO_AGO[dig]) {
+        state.solved++;
+        addLog('ok', 'Vencimiento consultado', 'RUC terminado en ' + dig + ' · respuesta automática');
+        return say('Listo. Para el RUC terminado en <b>' + dig + '</b>:\n<span class="tbl">• Periodo <b>julio 2026</b> → vence el <b>' + CRONO_AGO[dig] + '</b>\n• Periodo <b>agosto 2026</b> → vence el <b>' + CRONO_SET[dig] + '</b></span>\nEso cubre IGV, pagos a cuenta de renta y PLAME.\n\nSi es Buen Contribuyente tiene un día hábil adicional. ¿Quiere que le avise dos días antes de cada vencimiento?');
+      }
+      return say('No logré leer el dígito. 🤔 Mándeme solo el <b>último número de su RUC</b> — por ejemplo: 4');
+    }
+
+    var it = match(userText);
+    if (!it) {
+      state.escalated++;
+      addLog('esc', 'Consulta no reconocida', 'Derivada a una persona del equipo');
+      kpis();
+      return say('Esa consulta prefiero no responderla yo para no darle un dato equivocado. 🙋\n\n<b>Ya se la pasé a una persona del equipo</b> y le responden dentro del horario de oficina. Si es urgente, llame al estudio.');
+    }
+
+    if (it.ask === 'digito') { state.awaiting = 'digito'; return say(it.reply); }
+
+    if (it.escalate) { state.escalated++; } else if (!it.noCount) { state.solved++; }
+    if (it.logKind) { addLog(it.logKind, it.logTitle, it.logSub); }
+    else if (!it.noCount && !it.escalate) { addLog('ok', 'Consulta resuelta sola', 'Sin intervención del equipo'); }
+    else if (it.escalate) { addLog('esc', 'Derivado al profesional', 'El asistente no improvisó'); }
+    kpis();
+    return say(it.reply);
+  }
+
+  function say(html) {
+    typing(true);
+    var delay = Math.min(1500, 500 + html.length * 3);
+    setTimeout(function () { typing(false); push(html, 'in', true); }, delay);
+  }
+
+  function send(text) {
+    if (!text.trim()) return;
+    push(text, 'out', false);
+    setTimeout(function () { respond(text); }, 220);
+  }
+
+  // ---------- eventos ----------
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    send(input.value);
+    input.value = '';
+  });
+
+  CHIPS.forEach(function (c) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.textContent = c;
+    b.addEventListener('click', function () { send(c); });
+    chipsBox.appendChild(b);
+  });
+
+  Array.prototype.forEach.call(document.querySelectorAll('[data-cob]'), function (b) {
+    b.addEventListener('click', function () {
+      sys('Mensaje enviado por el asistente, sin que nadie lo escriba');
+      push(COBRANZA[b.getAttribute('data-cob')], 'in', true);
+      addLog('pay', 'Recordatorio de cobranza enviado', 'Automático, según la fecha de su cuota');
+    });
+  });
+
+  document.getElementById('reset').addEventListener('click', function () {
+    stream.innerHTML = '';
+    state = { solved: 0, escalated: 0, awaiting: null };
+    kpis();
+    logBox.innerHTML = '<div class="empty">Cada acción del asistente aparece acá: consultas resueltas, documentos recibidos, citas agendadas y casos derivados.</div>';
+    boot();
+  });
+
+  function boot() {
+    sys('Hoy · el cliente escribe al WhatsApp del estudio');
+    setTimeout(function () {
+      push('¡Hola! Soy el asistente del <b>Estudio Ecosam</b>. 👋\n\nLe respondo al instante las consultas del día a día: vencimientos, comprobantes, planillas, trámites. Lo que necesite criterio del contador, se lo derivo de una vez.\n\n¿En qué le ayudo?', 'in', true);
+    }, 500);
+  }
+
+  boot();
+  kpis();
+})();
+</script>
+</body>
+</html>
