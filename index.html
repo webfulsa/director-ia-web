@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="color-scheme" content="dark" />
 <title>Director IA — Dirige tu negocio con inteligencia</title>
-<meta name="description" content="Agentes de IA, automatización con n8n y Make, chatbots y scripts en Python que ponen en marcha hoy lo que tu negocio va a necesitar mañana." />
+<meta name="description" content="Agentes de IA, automatización de procesos y análisis de licitaciones del Estado peruano. Sistemas que corren dentro de tu negocio, no en una presentación." />
 <meta property="og:type" content="website" />
 <meta property="og:title" content="Director IA — Dirige tu negocio con inteligencia" />
-<meta property="og:description" content="Agentes de IA, automatización con n8n y Make, chatbots y scripts en Python que ponen en marcha hoy lo que tu negocio va a necesitar mañana." />
+<meta property="og:description" content="Agentes de IA, automatización de procesos y análisis de licitaciones del Estado peruano. Sistemas que corren dentro de tu negocio, no en una presentación." />
 <meta property="og:locale" content="es_PE" />
 <meta property="og:image" content="https://directoria.pe/assets/og-image.png" />
 <meta property="og:image:width" content="1200" />
@@ -328,8 +328,44 @@
   }
   @media (min-width: 800px) { .case { grid-template-columns: 1fr 1fr; align-items: center; } }
 
+  .case + .case { margin-top: 1.5rem; }
+
   .case h3 { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.75rem; }
-  .case p { color: var(--ink-secondary); }
+  .case p { color: var(--ink-secondary); margin: 0; }
+  .case p + p { margin-top: 0.9rem; }
+
+  .case-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 0.3rem 0.75rem;
+    margin-bottom: 1rem;
+  }
+  .case-tag::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex: none;
+  }
+
+  .case-note {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    line-height: 1.7;
+    color: var(--muted);
+    margin-top: 1.35rem;
+    padding-top: 1.1rem;
+    border-top: 1px solid var(--border);
+  }
 
   .case-flow {
     font-family: var(--font-mono);
@@ -442,7 +478,7 @@
     </a>
     <ul class="nav-links">
       <li><a href="#servicios">Servicios</a></li>
-      <li><a href="#caso">Caso de éxito</a></li>
+      <li><a href="#casos">Casos reales</a></li>
       <li><a href="#sobre">Sobre mí</a></li>
       <li><a href="#contacto">Contacto</a></li>
     </ul>
@@ -486,48 +522,82 @@
     <div class="wrap">
       <div class="section-head reveal">
         <p class="eyebrow">&gt; servicios</p>
-        <h2>Lo que construyo, hoy</h2>
+        <h2>Lo que resuelvo</h2>
       </div>
       <div class="services-grid reveal">
         <div class="service">
-          <code>$ automatizar --flujos</code>
-          <h3>Automatización con n8n y Make</h3>
-          <p>Conecto tus herramientas para que la información fluya sola, sin tareas repetitivas ni copiar y pegar entre sistemas.</p>
+          <code>$ decidir --con-data</code>
+          <h3>Decisiones con data, no con olfato</h3>
+          <p>A qué precio ofertar, qué servicio deja margen de verdad, a qué oportunidad vale la pena presentarse. Cruzo la información que ya tienes con la del mercado y la convierto en una recomendación con números detrás.</p>
         </div>
         <div class="service">
-          <code>$ desplegar --agente</code>
-          <h3>Agentes de IA</h3>
-          <p>Asistentes que ejecutan tareas completas por su cuenta: califican leads, responden consultas, procesan información. No solo conversan.</p>
+          <code>$ atender --24-7</code>
+          <h3>Atención que no duerme</h3>
+          <p>Tus clientes escriben a cualquier hora. Un agente en WhatsApp responde, califica y agenda al momento; a ti te llega solo lo que de verdad necesita una persona.</p>
         </div>
         <div class="service">
-          <code>$ activar --chatbot</code>
-          <h3>Chatbots</h3>
-          <p>Atención automática en WhatsApp, web o donde tus clientes ya están escribiendo, disponible las 24 horas.</p>
+          <code>$ delegar --repetitivo</code>
+          <h3>El trabajo repetitivo, hecho solo</h3>
+          <p>Copiar de un sistema a otro, armar el mismo reporte cada lunes, perseguir datos entre el correo y tres Excel. Se automatiza una vez con n8n y corre sin ti desde entonces.</p>
         </div>
         <div class="service">
-          <code>$ ejecutar --python</code>
-          <h3>Scripts a medida en Python</h3>
-          <p>Cuando la tarea es demasiado específica para una herramienta genérica, la resuelvo con código hecho a la medida de tu negocio.</p>
+          <code>$ construir --a-medida</code>
+          <h3>Lo que ninguna herramienta hace</h3>
+          <p>Cuando el proceso es demasiado tuyo para un software de caja, lo construyo con código: Python, IA y las herramientas que tu equipo ya usa todos los días.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <section id="caso">
+  <section id="casos">
     <div class="wrap">
       <div class="section-head reveal">
-        <p class="eyebrow">&gt; caso de éxito</p>
-        <h2>Licitaciones públicas, analizadas solas</h2>
+        <p class="eyebrow">&gt; casos reales</p>
+        <h2>Tres sistemas funcionando, no tres ideas</h2>
       </div>
+
       <div class="case reveal">
         <div>
-          <h3>Análisis automatizado de licitaciones del Estado</h3>
-          <p>Un sistema que revisa, analiza y organiza automáticamente las licitaciones públicas, para que evaluar cada oportunidad tome minutos de lectura en vez de horas de revisión manual.</p>
+          <span class="case-tag">En producción</span>
+          <h3>Licitaciones públicas: del PDF al informe de estrategia</h3>
+          <p>Entra el código del procedimiento del SEACE, o el PDF de las bases, y sale un informe de 11 secciones: requisitos, factores de evaluación, qué bonificaciones aplican y cuáles no, riesgos de las bases y a qué precio conviene ofertar. No opina desde el aire: cruza cada base con 404 586 contrataciones reales del Estado para saber a qué porcentaje del valor referencial se adjudica de verdad en procedimientos comparables.</p>
+          <p>Y encuentra lo que las bases esconden: artículos mal citados, anexos que se exigen y no existen, plazos que se contradicen dentro del mismo documento. Errores reales, en bases ya publicadas. Detectarlos antes de que cierre el plazo de consultas es la diferencia entre observar y quedar descalificado.</p>
+          <div class="case-note">&gt; probado contra procedimientos reales: una obra de S/ 2,6 M y una consultoría de obra de S/ 1,73 M</div>
         </div>
-        <div class="case-flow" aria-hidden="false">
-          <div class="step"><b>01</b> Rastrea publicaciones nuevas del Estado</div>
-          <div class="step"><b>02</b> Extrae y estructura los datos clave</div>
-          <div class="step"><b>03</b> Entrega un informe listo para decidir</div>
+        <div class="case-flow">
+          <div class="step"><b>01</b> Entra el código del SEACE o el PDF de las bases</div>
+          <div class="step"><b>02</b> Cruza requisitos y precios con la data real del mercado</div>
+          <div class="step"><b>03</b> Devuelve el informe de 11 secciones, listo para decidir</div>
+        </div>
+      </div>
+
+      <div class="case reveal">
+        <div>
+          <span class="case-tag">En producción</span>
+          <h3>Puente Live: dos idiomas, una sola conversación</h3>
+          <p>Traductor de voz en tiempo real. Cada persona usa su propio celular y sus audífonos: habla en su idioma y escucha al otro en el suyo. Se entra con un código de cuatro letras y no hay ninguna app que instalar. Probado en una conversación real español ↔ turco, fluida en ambas direcciones.</p>
+          <p>Va camino a kits de alquiler para hoteles y operadores de eventos: el establecimiento entrega los equipos a sus huéspedes, con sus propios códigos de acceso y por el tiempo que dure la estadía. Si manejas un hotel o produces eventos, esa es la conversación que quiero tener.</p>
+          <div class="case-note">&gt; salas por WebSocket + traducción con IA · se instala desde el navegador, sin tienda de apps</div>
+        </div>
+        <div class="case-flow">
+          <div class="step"><b>01</b> Cada persona entra a la sala con un código de 4 letras</div>
+          <div class="step"><b>02</b> Habla normal: su celular reconoce la voz y la envía</div>
+          <div class="step"><b>03</b> El otro la escucha en su idioma, en voz alta</div>
+        </div>
+      </div>
+
+      <div class="case reveal">
+        <div>
+          <span class="case-tag">Uso diario</span>
+          <h3>Armando: un asistente propio, dentro de un chat</h3>
+          <p>Mi asistente personal vive en un chat de Telegram y corre en mi propia máquina, no en la nube de nadie. Le hablo por voz o por texto: gestiona el calendario, busca en el correo, redacta borradores, consulta mis notas de trabajo y me manda el resumen del día a las siete de la mañana. Lo mismo se monta dentro de una empresa, con sus datos, sin que salgan a internet.</p>
+          <p>Redacta correos, pero tiene prohibido enviarlos. Un agente que se equivoca enviando no tiene vuelta atrás, así que esa decisión sigue siendo de quien lee.</p>
+          <div class="case-note">&gt; modelo corriendo en local · voz, calendario y correo conectados</div>
+        </div>
+        <div class="case-flow">
+          <div class="step"><b>01</b> Le hablas por voz o texto, como a cualquier contacto</div>
+          <div class="step"><b>02</b> Entiende, consulta tus sistemas y ejecuta</div>
+          <div class="step"><b>03</b> Responde hablando, y arranca solo cada mañana</div>
         </div>
       </div>
     </div>
@@ -542,7 +612,8 @@
       <div class="about reveal">
         <div class="about-card">
           <span class="mark" aria-hidden="true">&gt;</span>
-          <p><strong>Fundador de Director IA</strong></p>
+          <p><strong>Tito Castro Rodríguez</strong></p>
+          <p>Fundador de Director IA</p>
           <p>Ingeniería en Computación e Informática — Universidad Nacional Pedro Ruiz Gallo</p>
           <p>Chiclayo, Perú</p>
         </div>
