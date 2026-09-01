@@ -1,0 +1,23 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "rewrites": [
+    {
+      "source": "/radar/:token([0-9a-f]{24})",
+      "destination": "https://radar-informes.vercel.app/:token/"
+    },
+    {
+      "source": "/radar/:token([0-9a-f]{24})/",
+      "destination": "https://radar-informes.vercel.app/:token/"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/radar/(.*)",
+      "headers": [
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow" },
+        { "key": "Referrer-Policy", "value": "no-referrer" },
+        { "key": "Cache-Control", "value": "private, no-store" }
+      ]
+    }
+  ]
+}
