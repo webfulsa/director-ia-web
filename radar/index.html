@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="color-scheme" content="dark" />
+<title>Radar SEACE — Director IA</title>
+<meta name="description" content="El Radar SEACE revisa cada día las convocatorias del Estado peruano y avisa solo de las que calzan con el perfil de su empresa." />
+<meta name="robots" content="noindex, nofollow" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Radar SEACE — Director IA" />
+<meta property="og:description" content="Las convocatorias que calzan con su empresa, revisadas cada día." />
+<meta property="og:locale" content="es_PE" />
+<link rel="icon" href="/favicon.ico" sizes="32x32" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<meta name="theme-color" content="#0A1120" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0A1120;
+    --bg-elevated: #111A2E;
+    --ink: #F2EEE3;
+    --ink-secondary: #C7C1B2;
+    --muted: #8B96B8;
+    --accent: #6E93FF;
+    --accent-ink: #08101F;
+    --border: rgba(242,238,227,0.12);
+    --font-display: 'Outfit', ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --container: 640px;
+    --radius: 10px;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-size: 17px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  main {
+    flex: 1;
+    width: 100%;
+    max-width: var(--container);
+    margin: 0 auto;
+    padding: 72px 24px 48px;
+  }
+  .marca {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 28px;
+  }
+  h1 {
+    font-size: clamp(28px, 6vw, 40px);
+    line-height: 1.15;
+    font-weight: 700;
+    margin: 0 0 20px;
+    letter-spacing: -0.02em;
+  }
+  p { color: var(--ink-secondary); margin: 0 0 18px; }
+  .caja {
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin: 32px 0;
+  }
+  .caja h2 {
+    font-size: 17px;
+    font-weight: 600;
+    margin: 0 0 10px;
+    color: var(--ink);
+  }
+  .caja p { margin: 0; font-size: 15.5px; }
+  code {
+    font-family: var(--font-mono);
+    font-size: 13.5px;
+    background: rgba(110,147,255,0.10);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 2px 7px;
+    color: var(--ink);
+    word-break: break-all;
+  }
+  .acciones { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 34px; }
+  .btn {
+    display: inline-block;
+    font-weight: 600;
+    font-size: 15.5px;
+    text-decoration: none;
+    padding: 12px 22px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    color: var(--ink);
+    transition: border-color .15s ease, background .15s ease;
+  }
+  .btn:hover { border-color: var(--accent); }
+  .btn-principal {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--accent-ink);
+  }
+  .btn-principal:hover { filter: brightness(1.08); }
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 22px 24px;
+    text-align: center;
+  }
+  footer p {
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    color: var(--muted);
+    margin: 0;
+  }
+  @media (max-width: 480px) { main { padding: 48px 20px 40px; } }
+</style>
+</head>
+<body>
+<main>
+  <div class="marca">Director IA · Radar SEACE</div>
+
+  <h1>Este enlace necesita su código de acceso</h1>
+
+  <p>
+    El Radar SEACE revisa cada día todas las convocatorias publicadas por el
+    Estado peruano y le avisa solo de las que calzan con el perfil de su
+    empresa. Cada informe tiene su propia dirección privada.
+  </p>
+
+  <div class="caja">
+    <h2>Si llegó buscando su informe</h2>
+    <p>
+      Ábralo desde el enlace del mensaje que le llegó por WhatsApp. Termina en un
+      código propio, del estilo <code>/radar/a7f3c9e2…</code>, y es personal: no
+      se puede llegar a él escribiendo solo <code>/radar/</code>.
+    </p>
+  </div>
+
+  <p>
+    ¿El enlace no abre o el código caducó? Responda al mismo WhatsApp desde el
+    que le llegó y se lo reenviamos.
+  </p>
+
+  <div class="acciones">
+    <a class="btn btn-principal" href="https://wa.me/51936144428">Escribir por WhatsApp</a>
+    <a class="btn" href="/">Ir a Director IA</a>
+  </div>
+</main>
+
+<footer>
+  <p>DIRECTOR IA · Análisis referencial sobre datos abiertos del OECE</p>
+</footer>
+</body>
+</html>
