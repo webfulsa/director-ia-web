@@ -8,15 +8,28 @@
     {
       "source": "/radar/:token([0-9a-f]{24})/",
       "destination": "https://radar-informes.vercel.app/:token/"
+    },
+    {
+      "source": "/radar/:resto+",
+      "destination": "/radar/index.html"
     }
   ],
   "headers": [
     {
       "source": "/radar/(.*)",
       "headers": [
-        { "key": "X-Robots-Tag", "value": "noindex, nofollow" },
-        { "key": "Referrer-Policy", "value": "no-referrer" },
-        { "key": "Cache-Control", "value": "private, no-store" }
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "no-referrer"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "private, no-store"
+        }
       ]
     }
   ]
