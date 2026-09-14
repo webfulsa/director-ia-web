@@ -1,0 +1,15 @@
+# Director IA — https://www.directoria.pe
+
+# Política de uso del contenido (Content Signals, Cloudflare).
+# search=yes    · aparecer en buscadores, sí
+# ai-input=yes  · que un agente lea esta web para responder y citarla, sí
+# ai-train=no   · usar este contenido para entrenar modelos, no
+Content-Signal: search=yes, ai-input=yes, ai-train=no
+
+User-agent: *
+Allow: /
+Disallow: /radar/
+Disallow: /demo-contable/
+Disallow: /diagnostico-ecosam/
+
+Sitemap: https://www.directoria.pe/sitemap.xml
