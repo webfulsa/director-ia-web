@@ -21,6 +21,10 @@
         {
           "key": "Link",
           "value": "<https://www.directoria.pe/index.md>; rel=\"alternate\"; type=\"text/markdown\""
+        },
+        {
+          "key": "Vary",
+          "value": "Accept"
         }
       ]
     },
