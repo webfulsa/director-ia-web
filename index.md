@@ -1,7 +1,8 @@
-# Director IA — Dirige tu negocio con inteligencia
+# Directoria | Director IA para automatización de negocios
 
-Agentes de IA, automatización de procesos y análisis de licitaciones del Estado
-peruano. Sistemas que corren dentro de tu negocio, no en una presentación.
+Directoria es el sitio web de Director IA. Diseña agentes de IA, automatización de
+procesos y análisis de licitaciones del Estado peruano para negocios en Perú. Sistemas
+que corren dentro de tu negocio, no en una presentación.
 
 - **Web:** https://www.directoria.pe
 - **WhatsApp:** +51 959 546 590

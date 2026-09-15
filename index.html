@@ -4,16 +4,21 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="color-scheme" content="dark" />
-<title>Director IA — Dirige tu negocio con inteligencia</title>
-<meta name="description" content="Agentes de IA, automatización de procesos y análisis de licitaciones del Estado peruano. Sistemas que corren dentro de tu negocio, no en una presentación." />
+<title>Directoria | Director IA para automatización de negocios</title>
+<meta name="description" content="Directoria es el sitio de Director IA: agentes de IA, automatización de procesos y análisis de licitaciones para negocios en Perú." />
+<link rel="canonical" href="https://www.directoria.pe/" />
+<meta name="application-name" content="Directoria" />
 <meta property="og:type" content="website" />
-<meta property="og:title" content="Director IA — Dirige tu negocio con inteligencia" />
-<meta property="og:description" content="Agentes de IA, automatización de procesos y análisis de licitaciones del Estado peruano. Sistemas que corren dentro de tu negocio, no en una presentación." />
+<meta property="og:title" content="Directoria | Director IA para automatización de negocios" />
+<meta property="og:description" content="Agentes de IA, automatización de procesos y análisis de licitaciones para negocios en Perú." />
+<meta property="og:site_name" content="Directoria" />
 <meta property="og:locale" content="es_PE" />
 <meta property="og:image" content="https://directoria.pe/assets/og-image.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Directoria | Director IA para automatización de negocios" />
+<meta name="twitter:description" content="Agentes de IA, automatización de procesos y análisis de licitaciones para negocios en Perú." />
 <meta name="twitter:image" content="https://directoria.pe/assets/og-image.png" />
 <link rel="icon" href="/favicon.ico" sizes="32x32" />
 <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
@@ -29,8 +34,8 @@
       "@type": "ProfessionalService",
       "@id": "https://www.directoria.pe/#organizacion",
       "name": "Director IA",
-      "alternateName": "DIRECTOR IA",
-      "url": "https://www.directoria.pe",
+      "alternateName": ["Directoria", "Directoria.pe"],
+      "url": "https://www.directoria.pe/",
       "logo": "https://www.directoria.pe/icon-512.png",
       "image": "https://directoria.pe/assets/og-image.png",
       "slogan": "Dirige tu negocio con inteligencia",
@@ -145,10 +150,22 @@
     {
       "@type": "WebSite",
       "@id": "https://www.directoria.pe/#web",
-      "url": "https://www.directoria.pe",
-      "name": "Director IA",
+      "url": "https://www.directoria.pe/",
+      "name": "Directoria",
+      "alternateName": ["Director IA", "Directoria.pe"],
+      "description": "Sitio web de Director IA para agentes de IA, automatización de procesos y análisis de licitaciones en Perú.",
       "inLanguage": "es-PE",
       "publisher": { "@id": "https://www.directoria.pe/#organizacion" }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://www.directoria.pe/#pagina",
+      "url": "https://www.directoria.pe/",
+      "name": "Directoria | Director IA para automatización de negocios",
+      "description": "Agentes de IA, automatización de procesos y análisis de licitaciones para negocios en Perú.",
+      "isPartOf": { "@id": "https://www.directoria.pe/#web" },
+      "about": { "@id": "https://www.directoria.pe/#organizacion" },
+      "inLanguage": "es-PE"
     }
   ]
 }
@@ -629,7 +646,7 @@
         <div>
           <p class="eyebrow" id="typed-eyebrow" aria-live="polite"></p>
           <h1>El futuro no se espera.<br>Se automatiza.</h1>
-          <p class="lede">Diseño agentes de IA, automatizaciones y chatbots que ponen en marcha hoy lo que tu negocio va a necesitar mañana.</p>
+          <p class="lede"><strong>Directoria</strong> es el sitio de Director IA. Diseño agentes de IA, automatizaciones y chatbots que ponen en marcha hoy lo que tu negocio va a necesitar mañana.</p>
           <div class="hero-actions">
             <a class="btn btn-primary" href="https://wa.me/51959546590?text=Hola%2C%20quiero%20conversar%20sobre%20automatizaci%C3%B3n%20con%20Director%20IA" target="_blank" rel="noopener">Hablar por WhatsApp</a>
             <a class="btn btn-ghost" href="#servicios">Ver servicios</a>
@@ -800,7 +817,7 @@
 
 <footer>
   <div class="wrap footer-inner">
-    <p class="footer-tag">IA práctica, resultados reales.</p>
+    <p class="footer-tag">Directoria.pe · IA práctica, resultados reales.</p>
     <ul class="footer-links">
       <li><a href="https://www.linkedin.com/in/directoria/" target="_blank" rel="noopener">LinkedIn</a></li>
       <li><a href="https://www.linkedin.com/company/director-ia/" target="_blank" rel="noopener">Director IA en LinkedIn</a></li>
@@ -811,7 +828,7 @@
 </footer>
 
 <script>
-  document.getElementById('year').textContent = '© ' + new Date().getFullYear() + ' Director IA';
+  document.getElementById('year').textContent = '© ' + new Date().getFullYear() + ' Director IA · Directoria.pe';
 
   var header = document.getElementById('site-header');
   window.addEventListener('scroll', function () {
@@ -821,7 +838,7 @@
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   var eyebrowEl = document.getElementById('typed-eyebrow');
-  var fullText = 'Dirige tu negocio con inteligencia';
+  var fullText = 'Directoria | Director IA';
   if (reduced) {
     eyebrowEl.textContent = fullText;
   } else {

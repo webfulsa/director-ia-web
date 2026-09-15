@@ -1,7 +1,7 @@
 {
-  "name": "Director IA",
-  "short_name": "Director IA",
-  "description": "Agentes de IA, automatización y chatbots para negocios.",
+  "name": "Directoria | Director IA",
+  "short_name": "Directoria",
+  "description": "Directoria es el sitio de Director IA para agentes de IA, automatización y chatbots para negocios.",
   "lang": "es-PE",
   "start_url": "/",
   "display": "standalone",
